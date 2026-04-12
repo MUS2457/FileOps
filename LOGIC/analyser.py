@@ -111,7 +111,7 @@ def count_by_extension(files_paths):
 
     return extension_counter
 
-def size_by_type(files_paths):
+def tl_size_per_type(files_paths):
     size_counter = {}
     grouped = group_files(files_paths)
 
@@ -131,3 +131,77 @@ def size_by_type(files_paths):
         size_counter[types] = round(total_size / (1024 * 1024), 2)
 
     return size_counter
+
+def get_files_size_per_type(files_paths):
+    files_per_type = group_files(files_paths)
+    files_type_size = {}
+
+    if not files_per_type:
+        return files_type_size
+
+    for types, files in files_per_type.items():
+        for file in files:
+            try:
+                file_size = os.path.getsize(file)
+            except OSError:
+                continue
+
+            if types not in files_type_size:
+                files_type_size[types] = {}
+
+            files_type_size[types][file] = file_size
+
+    return files_type_size
+
+def get_max_min_size(files_paths):
+    files_sizes_per_type = get_files_size_per_type(files_paths)
+    large_small = {}
+
+    if not files_sizes_per_type:
+        return large_small
+
+    for types, files in files_sizes_per_type.items():
+
+        largest_file = max(files, key=files.get)
+        smallest_file = min(files, key=files.get)
+
+        large_small[types] = {
+            "largest": (largest_file, round(files[largest_file] / (1024 * 1024), 2)),
+            "smallest": (smallest_file, round(files[smallest_file] / (1024 * 1024), 2))
+        }
+
+    return large_small
+
+def global_max_min_file(files_paths):
+    all_files = {}
+
+    if not files_paths:
+        return all_files
+
+    for file in files_paths:
+        try:
+            file_size = os.path.getsize(file)
+        except OSError:
+            continue
+
+        all_files[file] = file_size
+
+    global_max_file = max(all_files, key=all_files.get)
+    global_min_file = min(all_files, key=all_files.get)
+
+    return {
+        "largest": (global_max_file, all_files[global_max_file]),
+        "smallest": (global_min_file, all_files[global_min_file])
+    }
+
+def sort_files_by_size_type(files_paths):
+    files_per_type = get_files_size_per_type(files_paths)
+    sorted_files_per_type = {}
+    if not files_per_type:
+        return files_per_type
+
+    for types, files in files_per_type.items():
+        list_sort = sorted(files.items(), key= lambda item: item[1])  #item [1] refers to size
+        sorted_files_per_type[types] = list_sort
+
+    return sorted_files_per_type
