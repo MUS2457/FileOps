@@ -205,3 +205,16 @@ def sort_files_by_size_type(files_paths):
         sorted_files_per_type[types] = list_sort
 
     return sorted_files_per_type
+
+def possible_duplicates(files_paths):
+    files_sized = group_files_by_size(files_paths)
+    possible_duplicate = {}
+
+    if not files_sized:
+        return possible_duplicate
+
+    for size, files in files_sized.items():
+        if len(files) > 1:
+            possible_duplicate[size] = files
+
+    return possible_duplicate
