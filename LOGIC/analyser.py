@@ -106,7 +106,7 @@ def count_by_extension(files_paths):
 
             if extension not in extension_counter:
                 extension_counter[extension] = {"types": types, "extensions_counter": 1}
-            else:  #without else i should set the first count into 0 instead of 1
+            else:  #without else I should set the first count into 0 instead of 1
                 extension_counter[extension]["extensions_counter"] += 1
 
     return extension_counter
