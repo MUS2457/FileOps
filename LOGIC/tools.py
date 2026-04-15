@@ -1,6 +1,7 @@
 from LOGIC import analyser
 import os
 import hashlib
+from datetime import datetime
 
 def hash_file(file_path):
     hasher = hashlib.md5()  # create a hash object
@@ -114,6 +115,50 @@ def search_by_size_range(file_paths):
         else:
             print("No files found in this range.")
 
+def full_age_report(file_paths):
+    results = {}
+    if not file_paths:
+        return results
+
+    now = datetime.now()
+
+    for file in file_paths:
+        m_time = os.path.getmtime(file)
+        modified = datetime.fromtimestamp(m_time)
+        days_ago = (now - modified).days
+
+        if days_ago not in results:
+            results[days_ago] = []
+        results[days_ago].append(file)
+
+    buckets = {
+        "Today (0 days)": [],
+        "Last 7 days (1–7)": [],
+        "Last 30 days (8–30)": [],
+        "This year (31–364)": [],
+        "Older than a year (365+)": []
+    }
+
+    # Assign files to buckets
+    for day, files in results.items():
+        if day == 0:
+            buckets["Today (0 days)"].extend(files)
+        elif 1 <= day <= 7:
+            buckets["Last 7 days (1–7)"].extend(files)
+        elif 8 <= day <= 30:
+            buckets["Last 30 days (8–30)"].extend(files)
+        elif 31 <= day <= 364:
+            buckets["This year (31–364)"].extend(files)
+        else:
+            buckets["Older than a year (365+)"].extend(files)
+
+    for label, files in buckets.items():
+        if files:
+            print(f"\n{label} — {len(files)} file(s):")
+            for f in files:
+                print(f"- {f}")
+
+    return buckets
 
 
 
