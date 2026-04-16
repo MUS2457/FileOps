@@ -59,14 +59,27 @@ def delete_file_by_name(file_paths):
             continue
 
         found = False
+        result = []
+        dic = {}
+        counter = 1
 
         for file in file_paths:
             file_name = os.path.basename(file)
             name, ext = os.path.splitext(file_name)
 
             if user.lower() == name.lower():
+                result.append(file)
                 found = True
 
+                for item in result:
+                   dic[counter] = item
+                   counter += 1
+
+                for key, value in dic.items():
+                    print(f"{key}: {value}")
+
+                user_2 = input("Enter one of the files based on the number ").strip()
+                if not user
                 confirm = input(f"Do you really want to delete {file_name}? [y/n] ").lower()
 
                 if confirm == "y":
