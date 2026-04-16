@@ -17,18 +17,31 @@ def get_category(file) :
 
     return "other"
 
-def organize_files_by_category(folder_path,file_paths) :
+def get_safe_destination(category_folder, file_name):
+    base, ext = os.path.splitext(file_name)
+    destination = os.path.join(category_folder, file_name)
+    counter = 1
 
-    for file in file_paths :
+    while os.path.exists(destination):  # Keep generating new names until a free one is found
+        destination = os.path.join(category_folder, f"{base}_copy{counter}{ext}") # counter starts at 1, so first duplicate becomes _copy1
+        counter += 1
+
+    return destination
+
+
+def organize_files_by_category(folder_path, file_paths):
+
+    for file in file_paths:
         category = get_category(file)
         new_location = os.path.join(folder_path, category)
 
-        if not os.path.exists(new_location) :
+        if not os.path.exists(new_location):
             os.makedirs(new_location)
 
         file_name = os.path.basename(file)
-        current_location = file  # file is originally is a path of that file ,address
-        destination = os.path.join(new_location, file_name)
+        current_location = file
+
+        destination = get_safe_destination(new_location, file_name)
 
         shutil.move(current_location, destination)
 
