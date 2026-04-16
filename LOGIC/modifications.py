@@ -46,6 +46,43 @@ def organize_files_by_category(folder_path, file_paths):
         shutil.move(current_location, destination)
 
 
+def delete_file_by_name(file_paths):
+    while True:
+        user = input("Enter the name of the file you would like to delete or 'exit' to quit: ").strip()
+
+        if user.lower() == "exit":
+            print("Exiting...")
+            break
+
+        elif not user:
+            print("Please enter a name")
+            continue
+
+        found = False
+
+        for file in file_paths:
+            file_name = os.path.basename(file)
+            name, ext = os.path.splitext(file_name)
+
+            if user.lower() == name.lower():
+                found = True
+
+                confirm = input(f"Do you really want to delete {file_name}? [y/n] ").lower()
+
+                if confirm == "y":
+                    os.remove(file)
+                    print(f"Deleted {file_name}")
+                elif confirm == "n":
+                    print("Skipped.")
+
+        if not found:
+            print("No file found with the given name.")
+
+
+
+
+
+
 
 
 
