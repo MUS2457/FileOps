@@ -54,48 +54,49 @@ def delete_file_by_name(file_paths):
             print("Exiting...")
             break
 
-        elif not user:
+        if not user:
             print("Please enter a name")
             continue
 
-        found = False
         result = []
-        dic = {}
-        counter = 1
-
         for file in file_paths:
             file_name = os.path.basename(file)
             name, ext = os.path.splitext(file_name)
 
-            if user.lower() == name.lower():
+            if user.lower() == name.lower() or name.lower().startswith(user.lower()):
                 result.append(file)
-                found = True
 
-                for item in result:
-                   dic[counter] = item
-                   counter += 1
+        if not result:
+            print("No file found")
+            continue
 
-                for key, value in dic.items():
-                    print(f"{key}: {value}")
+        dic = {}
+        counter = 1
+        for file in result:    # it s better if used,  for i, file in enumerate(result, start=1):  faster
+            dic[counter] = file
+            counter += 1
 
-                user_2 = input("Enter one of the files based on the number ").strip()
-                if not user
-                confirm = input(f"Do you really want to delete {file_name}? [y/n] ").lower()
+        print("\nFound files:")
+        for key in dic:
+            print(f"{key}: {os.path.basename(dic[key])}")
 
-                if confirm == "y":
-                    os.remove(file)
-                    print(f"Deleted {file_name}")
-                elif confirm == "n":
-                    print("Skipped.")
+        while True:
+            try:
+                choice = int(input("Enter the number of the file you want to delete: "))
+                if choice not in dic:
+                    print("Invalid number")
+                    continue
+                break
+            except ValueError:
+                print("Please enter a valid number")
 
-        if not found:
-            print("No file found with the given name.")
+        selected_file = dic[choice]
+        file_name = os.path.basename(selected_file)
 
+        confirm = input(f"Do you really want to delete {file_name}? [y/n] ").lower()
 
-
-
-
-
-
-
-
+        if confirm == "y":
+            os.remove(selected_file)
+            print(f"Deleted {file_name}")
+        else:
+            print("Skipped.")
