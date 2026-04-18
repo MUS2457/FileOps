@@ -1,6 +1,5 @@
 import os
-from LOGIC import extension
-from LOGIC.analyser import scan_folder_subfolders
+from LOGIC import extension, analyser
 import shutil
 
 
@@ -72,7 +71,7 @@ def delete_file_by_name(file_paths):
 
         dic = {}
         counter = 1
-        for file in result:    # it s better if used,  for i, file in enumerate(result, start=1):  faster
+        for file in result:
             dic[counter] = file
             counter += 1
 
@@ -81,14 +80,27 @@ def delete_file_by_name(file_paths):
             print(f"{key}: {os.path.basename(dic[key])}")
 
         while True:
+            choice = input("Enter the number of the file you want to delete or 'back' to search: ").strip().lower()
+
+            if choice == "back":
+                print("Returning to search...")
+                break
+
+            if not choice:
+                print("Please enter a number")
+                continue
+
             try:
-                choice = int(input("Enter the number of the file you want to delete: "))
+                choice = int(choice)
                 if choice not in dic:
                     print("Invalid number")
                     continue
                 break
             except ValueError:
                 print("Please enter a valid number")
+
+        if choice == "back":   # handle back before delete logic
+            continue
 
         selected_file = dic[choice]
         file_name = os.path.basename(selected_file)
@@ -100,3 +112,9 @@ def delete_file_by_name(file_paths):
             print(f"Deleted {file_name}")
         else:
             print("Skipped.")
+
+
+def delete_duplicate_files(duplicate):
+
+    if not duplicate:
+        return None
