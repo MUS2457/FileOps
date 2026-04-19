@@ -1,5 +1,5 @@
 import os
-from LOGIC import extension, analyser
+from LOGIC import extension
 import shutil
 
 
@@ -71,7 +71,7 @@ def delete_file_by_name(file_paths):
 
         dic = {}
         counter = 1
-        for file in result:
+        for file in result:   # it s better if used,  for i, file in enumerate(result, start=1):  faster
             dic[counter] = file
             counter += 1
 
@@ -115,6 +115,87 @@ def delete_file_by_name(file_paths):
 
 
 def delete_duplicate_files(duplicate):
-
     if not duplicate:
-        return None
+        print("No duplicate files found")
+        return
+
+    while True:
+        print("\n=== DUPLICATE GROUPS ===")
+        hash_map = {}
+        # fun fact a dic it one tuple with 2 items per iteration: (key, value)
+        # (hashed, files) unpack into 2 variables
+        for i, (hashed, files) in enumerate(duplicate.items(), start=1):  # (i) represent the number of hash
+
+            print(f"{i}. {hashed}  ({len(files)} files)")
+            names = []
+
+            for file in files:
+                file_name = os.path.basename(file)
+                names.append(os.path.basename(file_name))
+            print(f"Files name : {names}")
+
+            hash_map[i] = hashed  # store mapping for user selection
+
+        user = input("\nEnter group number (or 'exit'): ").strip().lower()
+
+        if user == "exit":
+            print("Exiting...")
+            break
+
+        if not user.isdigit():
+            print("Please enter a valid number")
+            continue
+
+        user = int(user)
+        if user not in hash_map:
+            print("Invalid group number")
+            continue
+
+        selected_hash = hash_map[user]
+        files = duplicate[selected_hash]
+
+        print(f"\n=== FILES IN GROUP: {selected_hash} ===")
+
+        file_map = {i: f for i, f in enumerate(files, start=1)}
+
+        for num, file_path in file_map.items():
+            print(f"{num}. {os.path.basename(file_path)}")
+
+        while True:
+            user_2 = input("\nEnter file number to delete ('back' to return): ").strip().lower()
+
+            if user_2 == "back":
+                print("Returning to group selection...")
+                break
+
+            if not user_2.isdigit():
+                print("Please enter a valid number")
+                continue
+
+            user_2 = int(user_2)
+            if user_2 not in file_map:
+                print("Invalid file number")
+                continue
+
+            selected_file = file_map[user_2]
+            file_name = os.path.basename(selected_file)
+
+            confirm = input(f"Delete {file_name}? (y/n/back): ").strip().lower()
+
+            if confirm == "y":
+                os.remove(selected_file)
+                print(f"Deleted {file_name}")
+                break
+
+            elif confirm == "n":
+                print("Skipped.")
+                break
+
+            elif confirm == "back":
+                print("Returning to file list...")
+                continue
+
+            else:
+                print("Please enter y, n, or back")
+                continue
+
