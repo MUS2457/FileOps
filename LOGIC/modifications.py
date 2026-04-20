@@ -58,6 +58,7 @@ def delete_file_by_name(file_paths):
             continue
 
         result = []
+
         for file in file_paths:
             file_name = os.path.basename(file)
             name, ext = os.path.splitext(file_name)
@@ -132,7 +133,7 @@ def delete_duplicate_files(duplicate):
             for file in files:
                 file_name = os.path.basename(file)
                 names.append(os.path.basename(file_name))
-            print(f"Files name : {names}")
+            print(f"Files names : {names}")
 
             hash_map[i] = hashed  # store mapping for user selection
 
@@ -198,4 +199,92 @@ def delete_duplicate_files(duplicate):
             else:
                 print("Please enter y, n, or back")
                 continue
+
+def rename_file(file_path):
+    if not file_path:
+        print("No file found")
+        return
+
+    while True:
+        user = input("Enter the name of file you want to rename it , or 'exit' to quit ").strip().lower()
+
+        if user.lower() == "exit":
+            print("Exiting...")
+            break
+
+        elif not user:
+            print("Please enter a name")
+            continue
+
+        result = []
+
+        for file in file_path:
+            file_name = os.path.basename(file)
+
+            if user.lower() == file_name.lower() or file_name.lower().startswith(user.lower()):
+                result.append(file)
+
+        if not result:
+            print("No file found")
+            continue
+
+        file_map = {i: f for i, f in enumerate(result, start=1)}
+
+        for i, file in file_map.items():
+            print(f"{i}. {os.path.basename(file)}")
+            while True:
+               user_2 = input("\nEnter file number to rename ,('back') to comeback): ").strip().lower()
+
+               if user_2.lower() == "back" :
+                   print("Returning to file search")
+                   break
+
+               elif not user_2 or not user_2.isdigit():
+                   print("Please enter a valid number")
+                   continue
+
+               user_2 = int(user_2)
+
+
+               if user_2 not in file_map :
+                   print("Invalid file number")
+                   continue
+
+               chosen_file = file_map[user_2]
+               current_path = chosen_file
+               path_only = os.path.dirname(current_path)
+               file_name = os.path.basename(chosen_file)
+               name,ext = os.path.splitext(file_name)
+
+
+               user_3 = input("What would you like to rename?, or 'back' to search ").strip().lower()
+
+               if user_3 == "back":
+                    print("Returning to file choose menu")
+                    continue
+
+
+               confirm = input("Are you sure you want to rename? [y/n] ").strip().lower()
+
+               if confirm == "n":
+                   print("Renaming has been cancelled")
+                   continue
+
+               elif confirm == "y":
+                   file_name2 = user_3 + ext
+                   new_path = os.path.join(path_only, file_name2)
+                   os.rename(chosen_file, new_path)
+                   print(f"Renamed {file_name} to {file_name2}")
+
+
+
+
+
+
+
+
+
+
+
+
 

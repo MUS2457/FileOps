@@ -5,8 +5,7 @@ from LOGIC import modifications
 def main():
     user = input("Username: ")
     files_path = scan_folder_subfolders(user)
-    duplicates_path = tools.find_duplicates(files_path)
-    modifications.delete_duplicate_files(duplicates_path)
+    modifications.rename_file(files_path)
 
 
 if __name__ == "__main__":
