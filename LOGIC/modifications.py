@@ -337,6 +337,32 @@ def move_file(file_path):
                 print("Cancelled, returning to file selection...")
                 continue
 
+def delete_empty_folders(folder_path):
+    deleted = []
+
+    for item in os.listdir(folder_path):
+        full_path = os.path.join(folder_path, item)
+
+        # If it's a folder, clean inside it first
+        if os.path.isdir(full_path):
+            sub_deleted = delete_empty_folders(full_path)
+            deleted.extend(sub_deleted)
+
+            # After cleaning subfolders, check if this folder is now empty
+            if not os.listdir(full_path):
+                os.rmdir(full_path)
+                deleted.append(full_path)
+                print(f"Deleted: {full_path}")
+
+    return deleted
+
+
+
+
+
+
+
+
 
 
 
