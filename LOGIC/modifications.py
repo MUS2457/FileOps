@@ -267,6 +267,75 @@ def rename_file(file_path):
 
             print(f"Renamed {old_name} → {new_name}")
 
+def move_file(file_path):
+    if not file_path:
+        print("No file found")
+        return
+
+    while True:
+        user = input("Enter the name of file you would like to move, 'exit' to quit ").strip().lower()
+
+        if user == "exit" :
+            print("Exiting...")
+            break
+
+        elif not user:
+            print("Please enter a name")
+            continue
+
+        result = []
+
+        for file in file_path:
+            file_name = os.path.basename(file)
+            if user in file_name.lower() or file_name.lower().startswith(user.lower()):
+                result.append(file)
+
+        if not result:
+            print("No file found")
+            continue
+
+        file_map = {i: f for i, f in enumerate(result, start=1)}
+
+        while True:
+            print("\nMatched files:")
+            for i, f in file_map.items():
+                print(f"{i}. {os.path.basename(f)}")
+
+            user_2 = input("\nEnter file number to move ('back' to search): ").strip().lower()
+
+            if user_2 == "back":
+                print("Returning to search selection...")
+                break
+
+            elif not user_2 or not user_2.isdigit() or int(user_2) not in file_map:
+                print("Please enter a valid number")
+                continue
+
+            chosen_file = file_map[int(user_2)]
+            folder = os.path.dirname(chosen_file)
+
+            user_3 = input("Enter the name of folder you want the chosen file to move to it ").strip()
+
+            destination = os.path.join(folder, user_3)
+
+            confirm = input("Confirm move? [y] if not type anything else : ").strip().lower()
+
+            if confirm == "y":
+
+                if not os.path.exists(destination):
+                    os.makedirs(destination)
+                    shutil.move(chosen_file, destination)
+                    print(f"Moved {chosen_file} to {destination}")
+
+                else :
+                    shutil.move(chosen_file, destination)
+                    print(f"Moved {chosen_file} to {destination}")
+
+                break
+
+            else:
+                print("Cancelled, returning to file selection...")
+                continue
 
 
 

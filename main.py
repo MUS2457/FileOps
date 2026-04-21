@@ -5,7 +5,7 @@ from LOGIC import modifications
 def main():
     user = input("Username: ")
     files_path = scan_folder_subfolders(user)
-    modifications.rename_file(files_path)
+    modifications.move_file(files_path)
 
 
 if __name__ == "__main__":
