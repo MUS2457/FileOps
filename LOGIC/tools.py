@@ -75,8 +75,8 @@ def search_by_size_range(file_paths):
 
     while True:
         try:
-            user_1 = int(input("Please enter minimum size (MB): "))
-            user_2 = int(input("Please enter maximum size (MB): "))
+            user_1 = float(input("Please enter minimum size (MB): "))
+            user_2 = float(input("Please enter maximum size (MB): "))
 
             if user_1 > user_2:
                 print("The minimum range is bigger than the maximum range.")

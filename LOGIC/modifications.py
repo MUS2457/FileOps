@@ -343,18 +343,24 @@ def delete_empty_folders(folder_path):
     for item in os.listdir(folder_path):
         full_path = os.path.join(folder_path, item)
 
-        # If it's a folder, clean inside it first
         if os.path.isdir(full_path):
             sub_deleted = delete_empty_folders(full_path)
-            deleted.extend(sub_deleted)
+            deleted.extend(sub_deleted) # each call has its OWN deleted = []  (not shared)
 
-            # After cleaning subfolders, check if this folder is now empty
             if not os.listdir(full_path):
-                os.rmdir(full_path)
+                os.rmdir(full_path)  #  parent never deletes child folders,   each level deletes only itself.
                 deleted.append(full_path)
                 print(f"Deleted: {full_path}")
 
+        # deleted = []
+        # extend(["a1", "a"])  # now deleted = ["a1", "a"]
+        # append("root")
+        # return ["a1", "a", "root"]
+
     return deleted
+
+
+
 
 
 
