@@ -10,7 +10,7 @@ def hash_file(file_path):
         while True:
             chunk = file.read(4096) # read a small part of the file
 
-            if not chunk:  # stop when there's no more data
+            if not chunk:  # stop when there is no more data
                 break
             hasher.update(chunk)  # add this part to the hash
 
@@ -159,6 +159,44 @@ def full_age_report(file_paths):
                 print(f"- {f}")
 
     return buckets
+
+def search_by_extension(file_paths):
+    if not file_paths:
+        return []
+
+    while True:
+        user = input("Please enter extension of the file you would like to search for, or 'exit' to quit: ").strip()
+
+        if user == "exit":
+            print("Exiting...")
+            break
+
+        elif not user:
+            print("Please enter a valid file extension.")
+            continue
+
+        collections = []
+
+        for file in file_paths:
+            file_name = os.path.basename(file)
+            _ , ext = os.path.splitext(file_name)
+            user2 = "." + user
+            if user2.lower() == ext.lower() or ext.lower().startswith(user2.lower()):
+                collections.append(file)
+
+        if not collections :
+            print("No file found.")
+            continue
+
+        print(f"Number of files: {len(collections)}")
+        for file in collections:
+            print(f"- {file}")
+
+        return collections
+
+
+
+
 
 
 
