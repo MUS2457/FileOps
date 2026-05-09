@@ -1,12 +1,12 @@
 import os
-
+from DATA import scan
 from LOGIC import analyser
-from LOGIC import modifications
-from LOGIC import tools
+from OPERATIONS import modifications
+from UTILS import tools
 
 
 def main():
-    print("=== FILE MANAGEMENT CLI ===")
+    print("=== FileOps by RaijinCode Final version ===")
 
     folder = input("Enter folder path: ").strip()
 
@@ -14,12 +14,12 @@ def main():
         print("Invalid path.")
         return
 
-    file_paths = analyser.scan_folder_subfolders(folder)
+    file_paths = scan.scan_folder_subfolders(folder)
 
     while True:
         print("\n=== MENU ===")
 
-        # --- OPERATIONS ---
+        # operations
         print("\n[OPERATIONS]")
         print("1. Organize files by category")
         print("2. Delete file by name")
@@ -28,28 +28,29 @@ def main():
         print("5. Move file")
         print("6. Delete empty folders")
 
-        # --- SEARCH ---
+        # search
         print("\n[SEARCH]")
         print("7. Search by name")
         print("8. Search by size range")
         print("9. File age report")
+        print("10. Search by extension")
 
-        # --- ANALYSER ---
+        # analysis
         print("\n[ANALYSIS]")
-        print("10. Count files by type")
-        print("11. Count files by extension")
-        print("12. Total size per type")
-        print("13. Largest & smallest file per type")
-        print("14. Global largest & smallest file")
-        print("15. Sort files by size per type")
-        print("16. Count files per size")
-        print("17. Duplicate files")
+        print("11. Count files by type")
+        print("12. Count files by extension")
+        print("13. Total size per type")
+        print("14. Largest & smallest file per type")
+        print("15. Global largest & smallest file")
+        print("16. Sort files by size per type")
+        print("17. Count files per size")
+        print("18. Duplicate files")
 
         print("\n0. Exit")
 
         choice = input("\nChoose an option: ").strip()
 
-        # ---------------- OPERATIONS ----------------
+        # operations
 
         if choice == "1":
             modifications.organize_files_by_category(folder, file_paths)
@@ -81,27 +82,30 @@ def main():
         elif choice == "9":
             tools.full_age_report(file_paths)
 
+        elif choice == "10":
+            tools.search_by_extension(file_paths)
+
         # analysis fc
 
-        elif choice == "10":
+        elif choice == "11":
             result = analyser.count_by_type(file_paths)
             print("\nFiles per type:")
             for k, v in result.items():
                 print(f"{k}: {v}")
 
-        elif choice == "11":
+        elif choice == "12":
             result = analyser.count_by_extension(file_paths)
             print("\nFiles per extension:")
             for ext, data in result.items():
                 print(f"{ext} ({data['types']}): {data['extensions_counter']}")
 
-        elif choice == "12":
+        elif choice == "13":
             result = analyser.tl_size_per_type(file_paths)
             print("\nTotal size per type (MB):")
             for k, v in result.items():
                 print(f"{k}: {v} MB")
 
-        elif choice == "13":
+        elif choice == "14":
             result = analyser.get_max_min_size(file_paths)
             print("\nLargest & smallest per type:")
             for k, v in result.items():
@@ -112,7 +116,7 @@ def main():
                 print(f"  Largest: {largest} ({l_size} MB)")
                 print(f"  Smallest: {smallest} ({s_size} MB)")
 
-        elif choice == "14":
+        elif choice == "15":
             result = analyser.global_max_min_file(file_paths)
             if result:
                 largest, l_size = result["largest"]
@@ -122,7 +126,7 @@ def main():
                 print(f"Largest: {largest} ({round(l_size / (1024**2), 2)} MB)")
                 print(f"Smallest: {smallest} ({round(s_size / (1024**2), 2)} MB)")
 
-        elif choice == "15":
+        elif choice == "16":
             result = analyser.sort_files_by_size_type(file_paths)
             print("\nSorted files by type:")
             for k, files in result.items():
@@ -130,14 +134,17 @@ def main():
                 for file, size in files:
                     print(f"{file} - {round(size / (1024**2), 2)} MB")
 
-        elif choice == "16":
+        elif choice == "17":
             result = analyser.count_files_per_size(file_paths)
             print("\nFiles per size:")
             for size, count in result.items():
                 print(f"{round(size / (1024**2), 2)} MB: {count} file(s)")
 
-        elif choice == "17":
+        elif choice == "18":
             duplicates = tools.find_duplicates(file_paths)
+            if not duplicates:
+                print("\nNo duplicate files found.")
+
             for hashed, files in duplicates.items():
                 print(f"{hashed}: {len(files)} file(s)")
                 for file in files:
@@ -152,7 +159,7 @@ def main():
             print("Invalid choice.")
 
         # track in real time the changes
-        file_paths = analyser.scan_folder_subfolders(folder)
+        file_paths = scan.scan_folder_subfolders(folder)
 
 
 if __name__ == "__main__":

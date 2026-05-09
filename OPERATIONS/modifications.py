@@ -1,5 +1,5 @@
 import os
-from LOGIC import extension
+from DATA import extension
 import shutil
 
 
@@ -358,26 +358,5 @@ def delete_empty_folders(folder_path):
         # return ["a1", "a", "root"]
 
     return deleted
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

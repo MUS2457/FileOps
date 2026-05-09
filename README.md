@@ -1,131 +1,108 @@
-FILEOPS – FILE MANAGEMENT CLI
+# FILEOPS – FILE MANAGEMENT CLI
 
-FileOps is a simple command‑line tool for managing, organizing, searching, and analyzing files inside any folder. It focuses on practical operations and a clean workflow. The tool scans all subfolders, builds a file list, and updates it after every operation so the data is always fresh.
+FileOps is a lightweight command‑line tool I built to manage, organize, search, and analyze files inside any folder.  
+It focuses on practical operations, clean architecture, and a smooth workflow.  
+The tool scans all subfolders, builds a file list, and refreshes it after every action so the data is always up‑to‑date.
 
-FEATURES
+This project was fun to build — a mix of challenge, curiosity, and “let’s see how far I can push this”.
 
-OPERATIONS
+---
 
-Organize files by category (images, videos, documents, audio, etc.)
+### OPERATIONS
+- Organize files by category (images, videos, documents, audio, etc.)
+- Delete files by name (with interactive selection)
+- Find and delete duplicate files (hash‑based, chunk reading)
+- Rename files (safe rename with confirmation)
+- Move files to a new folder
+- Delete empty folders (recursive)
 
-Delete file by name
+### SEARCH
+- Search files by name
+- Search files by size range (MB)
+- Full file age report (today, last 7 days, last 30 days, this year, older)
+- Search files by extension
 
-Find and delete duplicate files (hash based, chunk reading)
+### ANALYSIS
+- Count files by type (images, videos, documents…)
+- Count files by extension
+- Total size per type (MB)
+- Largest and smallest file per type
+- Global largest and smallest file
+- Sort files by size per type
+- Detect possible duplicates by size
 
-Rename files
+---
 
-Move files
+## How It Works
 
-Delete empty folders (recursive)
+1. The user enters a folder path.  
+2. FileOps scans all subfolders and collects every file path.  
+3. A menu appears with all available operations.  
+4. After each action, FileOps rescans the folder so the next operation always uses fresh data.
 
-SEARCH
+Everything is built using Python’s standard modules — no external dependencies.
 
-Search files by name
 
-Search files by size range
+### Folder Roles
 
-Full file age report
+- **DATA/**  
+  Handles scanning folders and defining file types/extensions.
 
-Search files by extension
+- **OPERATIONS/**  
+  All file modification actions:  
+  - organize  
+  - delete  
+  - rename  
+  - move  
+  - delete empty folders  
 
-ANALYSIS
+- **LOGIC/**  
+  Analysis logic:  
+  - grouping  
+  - counting  
+  - size reports  
+  - global max/min  
+  - sorting  
+  - possible duplicates  
 
-Count files by type
+- **UTILS/**  
+  Helper functions:  
+  - hashing  
+  - search tools  
+  - age report  
+  - duplicate detection  
 
-Count files by extension
+- **main.py**  
+  The CLI entry point — handles user interaction and menu flow.
 
-Total size per type
+This architecture is clean, modular, and easy to extend — exactly how I like my backend tools.
 
-Largest and smallest file per type
+---
 
-Global largest and smallest file
+## Purpose
 
-Sort files by size per type
+FileOps was born from a simple truth:
+every laptop I touch eventually becomes a chaotic mess.  
+This tool is my way of breaking that curse.
 
-Count files per size
+Along the way, it became a great playground to practice:
 
-Duplicate file report
+- clean architecture
 
-HOW IT WORKS
+- modular design
 
-The user enters a folder path.
+- recursion
 
-FileOps scans all subfolders and collects every file path.
+- hashing
 
-The menu appears with all available operations.
+- file system operations
 
-After each action, FileOps rescans the folder so the next operation always uses updated data.
+- real‑time state tracking
 
-No external libraries are required. Everything uses Python’s built‑in modules.
+- CLI user experience
 
-INSTALLATION
+## Future Improvements (Optional)
+ 
+- Add ZIP archive tool  
 
-Run the project with:
 
-python main.py
-
-USAGE EXAMPLE
-
-=== FileOps by RaijinCode Final version ===
-Enter folder path: /Users/you/Desktop/Projects
-
-=== MENU ===
-
-Organize files by category
-
-Delete file by name
-
-Find and delete duplicates
-...
-
-Search by extension
-...
-
-Exit
-
-Choose a number and FileOps performs the selected action.
-
-PROJECT STRUCTURE
-
-FileOps/
-main.py
-LOGIC/
-analyser.py
-modifications.py
-tools.py
-README.md
-
-main.py handles the menu and user interaction.
-analyser.py contains counting, sorting, and size analysis.
-modifications.py contains rename, move, delete, and organize operations.
-tools.py contains search tools, duplicate finder, and age report.
-
-PURPOSE
-
-FileOps was created to practice and demonstrate:
-
-clean architecture
-
-modular design
-
-recursion
-
-hashing
-
-file system operations
-
-real‑time state tracking
-
-CLI user experience
-
-It is both a practical tool and a structured learning project.
-
-FUTURE IMPROVEMENTS (OPTIONAL)
-
-Add logging
-
-Add undo history
-
-Add ZIP archive tool
-
-Add configuration file for custom categories
