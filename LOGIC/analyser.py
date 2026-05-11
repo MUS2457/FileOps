@@ -15,7 +15,6 @@ def group_files_by_size(files_paths):
             sized_files[file_size].append(file)
 
         except OSError:
-            # Skip files that cant be accessed for ex : deleted ,permission
             continue
 
     return sized_files

@@ -266,6 +266,7 @@ def rename_file(file_path):
             os.rename(current_path, new_path)
 
             print(f"Renamed {old_name} → {new_name}")
+            return 
 
 def move_file(file_path):
     if not file_path:
@@ -330,8 +331,8 @@ def move_file(file_path):
                 else :
                     shutil.move(chosen_file, destination)
                     print(f"Moved {chosen_file} to {destination}")
+                    continue
 
-                break
 
             else:
                 print("Cancelled, returning to file selection...")
@@ -354,7 +355,7 @@ def delete_empty_folders(folder_path):
 
         # deleted = []
         # extend(["a1", "a"])  # now deleted = ["a1", "a"]
-        # append("root")
+        # append("root")   those example for future me
         # return ["a1", "a", "root"]
 
     return deleted
